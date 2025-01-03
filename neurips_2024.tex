@@ -70,9 +70,10 @@
 \newcommand{\wjc}[1]{{{#1}}}
 \RequirePackage{bm}
 \newcommand{\btheta}{\bm{\theta}}
-% \title{A Novel Alignment Approach based on Information Fusion View: \\ Direct Preference Optimization with Dynamic Learnable $\beta$}
-% \title{Dynamic-$\beta$ DPO: \\ A Novel Information Fusion Framework for Preference Alignment}
-\title{Information Fusion Perspective on Direct Preference Optimization: A Learnable $\beta(x)$ Approach}
+\title{A Novel Approach to Direct Preference Optimization: Dynamic $\beta$ and Quality-Aware Data Filtering}
+\title{$\beta$-DPO: Direct Preference Optimization \\ with Dynamic $\beta$}
+
+
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
 %
@@ -81,15 +82,15 @@
 % authors names on the first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
-% \author{
-%    Junkang Wu$^{1}$\thanks{Work done at Alibaba Group.}~~Yuexiang Xie$^{2}$~~Zhengyi Yang$^{1}$~~Jiancan Wu$^{1}$\thanks{Jiancan Wu and Xiangnan He are the corresponding authors.}
-%    ~~\\
-%    \textbf{Jinyang Gao$^{2}$~~Bolin Ding$^{2}$~~Xiang Wang$^{1}$~~Xiangnan He$^{1}$\footnotemark[2]}\\
-%   $^{1}$University of Science and Technology of China\\
-%   $^{2}$Alibaba Group \\
-%   \texttt{\{jkwu0909, yangzhy1998, wujcan, xiangwang1223, xiangnanhe\}@gmail.com},\\ 
-%   \texttt{\{yuexiang.xyx, jinyang.gjy, bolin.ding\}@alibaba-inc.com}
-% }
+\author{
+   Junkang Wu$^{1}$\thanks{Work done at Alibaba Group.}~~Yuexiang Xie$^{2}$~~Zhengyi Yang$^{1}$~~Jiancan Wu$^{1}$\thanks{Jiancan Wu and Xiangnan He are the corresponding authors.}
+   ~~\\
+   \textbf{Jinyang Gao$^{2}$~~Bolin Ding$^{2}$~~Xiang Wang$^{1}$~~Xiangnan He$^{1}$\footnotemark[2]}\\
+  $^{1}$University of Science and Technology of China\\
+  $^{2}$Alibaba Group \\
+  \texttt{\{jkwu0909, yangzhy1998, wujcan, xiangwang1223, xiangnanhe\}@gmail.com},\\ 
+  \texttt{\{yuexiang.xyx, jinyang.gjy, bolin.ding\}@alibaba-inc.com}
+}
 % \author{%
 %   David S.~Hippocampus\thanks{Use footnote for providing further information
 %     about author (webpage, alternative address)---\emph{not} for acknowledging
@@ -129,7 +130,7 @@
 
 
 \begin{abstract}
-Direct Preference Optimization (DPO) has emerged as a compelling approach for aligning Large Language Models (LLMs) with human preferences. However, the current DPO framework lacks a theoretical understanding from an information fusion perspective, and its performance is sensitive to the static trade-off parameter $\beta$. In this work, we first establish a novel theoretical framework that views DPO as an information fusion process between the reference model and human preference signals, providing insights into how different fusion operators can be utilized for preference learning. Based on this view, we propose to make $\beta$ learnable and dynamically adjusted during training, which allows the model to automatically balance between preserving reference knowledge and incorporating human feedback according to the characteristics of input instances. Through extensive experiments on various models and datasets, we demonstrate that our approach not only achieves superior performance compared to standard DPO but also provides better theoretical interpretability and training stability. The code is available at \url{https://github.com/1587causalai/info-fusion-dpo}.
+Direct Preference Optimization (DPO) has emerged as a compelling approach for training Large Language Models (LLMs) to adhere to human preferences. However, the performance of DPO is sensitive to the fine-tuning of its trade-off parameter $\beta$, as well as to the quality of the preference data. We analyze the impact of $\beta$ and data quality on DPO, uncovering that optimal $\beta$ values vary with the informativeness of pairwise data. Addressing the limitations of static $\beta$ values, we introduce a novel framework that dynamically calibrates $\beta$ at the batch level, informed by data quality considerations. Additionally, our method incorporates $\beta$-guided data filtering to safeguard against the influence of outliers. Through empirical evaluation, we demonstrate that our dynamic $\beta$ adjustment technique significantly improves DPO's performance across a range of models and datasets, offering a more robust and adaptable training paradigm for aligning LLMs with human feedback. The code is available at \url{https://github.com/junkangwu/beta-DPO}.
 \end{abstract}
 
 \input{chapters/1_intro.tex}
@@ -286,7 +287,7 @@ This research is supported by the National Science and Technology Major Project 
 \item {\bf Open access to data and code}
     \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
     \item[] Answer: \answerYes{} % Replace by \answerYes{}, \answerNo{}, or \answerNA{}.
-    \item[] Justification: The code is available at \url{https://github.com/1587causalai/info-fusion-dpo}.
+    \item[] Justification: The code is available at \url{https://github.com/junkangwu/beta-DPO}.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer NA means that paper does not include experiments requiring code.

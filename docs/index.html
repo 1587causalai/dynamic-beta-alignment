@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"/>
   <script src="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/marked@4"></script>
+  <!-- 添加 Mermaid -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
+  <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 </head>
 <body>
   <div id="app"></div>
@@ -22,7 +25,17 @@
       subMaxLevel: 3,
       auto2top: true,
       markdown: {
-        breaks: true
+        breaks: true,
+        renderer: {
+          code: function(code, lang) {
+            if (lang === "mermaid") {
+              return (
+                '<div class="mermaid">' + code + "</div>"
+              );
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
       },
       latex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
@@ -35,7 +48,15 @@
         placeholder: 'Search',
         noData: 'No Results',
         depth: 6
-      }
+      },
+      plugins: [
+        function (hook) {
+          hook.doneEach(function () {
+            mermaid.initialize({ startOnLoad: true });
+            mermaid.init(undefined, '.mermaid');
+          });
+        }
+      ]
     }
   </script>
   <!-- Docsify v4 -->

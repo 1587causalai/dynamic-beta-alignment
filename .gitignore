@@ -66,4 +66,7 @@ ENV/
 wandb/
 runs/
 checkpoints/
-logs/ 
+logs/
+
+# Reference code (not tracked)
+beta-DPO/ 
