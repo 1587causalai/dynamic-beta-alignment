@@ -6,5 +6,6 @@
 * [实验记录](experiments.md)
 * 附录
   * [DPO推导](dpo_derivation.md)
+  * [基线β-DPO方法](baseline_beta_dpo.md)
   * [基础知识](preliminaries.md)
   * [信息融合视角](information_fusion.md)
