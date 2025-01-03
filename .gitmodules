@@ -1,0 +1,3 @@
+[submodule "info-fusion-dpo"]
+	path = info-fusion-dpo
+	url = https://github.com/1587causalai/info-fusion-dpo.git
