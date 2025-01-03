@@ -1,0 +1,71 @@
+\section{Preliminaries}
+\label{Preliminaries}
+Given a text sequence (commonly referred to as a prompt) $\xb$, a sequence $\yb = [y_1, y_2, \dots y_N]$ is generated as a response to the prompt $\xb$.  
+% two text sequences $\yb_w = [y_1, y_2, \dots]$ and $\yb_l$ are generated as responses to the prompt $\xb$. 
+An autoregressive language model $\pi$, when provided with the prompt $\xb$, can generate the response sequence $\yb$ following the probability decomposition:
+\begin{equation}
+    \pi(\yb|\xb) = \prod_{t=1}^{N}\pi(y_i|\xb, \yb_{<t}),
+\end{equation}
+where $\yb_{<t}$ denotes the preceding tokens in the response sequence.
+Now, given a preference dataset $\Set{D} = \{ (\xb^{(i)}, \yb_w^{(i)}, \yb_l^{(i)}) \}_{i=1}^{M}$, wherein each triplet consists of a prompt $\xb$ with two responses $\yb_w\in\Sigma^{*}$ and $\yb_l\in\Sigma^{*}$, with $\Sigma^{*}$ representing the alphabet, a preference oracle --- either a human annotator or a language model --- provides preference feedback $o(\yb_w \succ \yb_l |\xb) \in \{0,1\}$, indicating whether $\yb_w$ is preferred over $\yb_l$. We denote $\mathbb{P}(\yb_w \succ \yb_l| \xb) = \mathbb{E}[o(\yb_w \succ \yb_l|\xb)]$ the probability of $\yb_w$ ``winning the duel'' over $\yb_l$. The Kullback-Leibler (KL) divergence between two probability distributions with densities $p$ and $q$ is defined as $\mathrm{KL}(p \| q) = \mathbb{E}_{\yb \sim p(\yb)} \Big[\log \frac{p(\yb)}{q(\yb)} \Big]$.
+
+% In this context, we aim to leverage preference feedback from the oracle to refine the language model's ability to generate preferred responses. By minimizing the KL divergence between the model's distribution and the oracle's preference distribution, we can align the model's outputs with the desired preferences.
+
+% We consider the preference learning scenario as follows. Given a text sequence (commonly referred to as prompt) $\xb = [x_1, x_2, \dots]$, two text sequences $\yb = [y_1, y_2, \dots]$ and $\yb'$ are generated as responses to the prompt $\xb$. An autoregressive language model $\pi$ given the prompt $\xb$ can generate responses $\yb$ following the probability decomposition
+% \begin{align*}
+%     \pi(\yb|\xb)
+%     =
+%     \prod_{i=1}^{N}\pi(y_i|\xb, \yb_{<i}).
+% \end{align*}
+% Given the prompt $\xb$ and two responses $\yb_w$ and $\yb_l$, a preference oracle (either a human annotator or a language model) will provide preference feedback $o(\yb_w \succeq \yb_l |\xb) \in \{0,1\}$ indicating whether $\yb_w$ is preferred over $\yb_l$. We denote $\mathbb{P}(\yb_w \succeq \yb_l | \xb) = \mathbb{E}[o(\yb_w \succ \yb_l|\xb)]$ as the probability of $\yb_w$ ``winning the duel'' over $\yb_l$. The KL divergence of two probability distributions of density $p$ and $q$ is defined as $\mathrm{KL}(p \| q) = \mathbb{E}_{\yb \sim p(\yb)} \Big[\log \frac{p(\yb)}{q(\yb)} \Big]$.
+
+\textbf{RLHF with Reward Models.} \citet{ChristianoLBMLA17} pioneer the learning of a reward function $r(\yb ;\xb)$ based on the Bradley-Terry model~\citep{bradley1952rank}. This model is deployed for 
+% a given triplet of a prompt and two responses $(\xb, \yb_w, \yb_l)$, defining the likelihood of preference for $\yb_w$ over $\yb_l$ as
+the triplet of a prompt ($\xb$) and two responses ($\yb_w,\yb_l$), establishing the likelihood of preference for $\yb_w$ over $\yb_l$ as:
+\begin{align}
+    \mathbb{P}(\yb_w \succ \yb_l | \xb)
+    & = 
+    \frac{\exp(r(\yb_w; \xb))}{\exp(r(\yb_w; \xb)) + \exp(r(\yb_l; \xb))}
+    =
+    \sigma \big(r(\yb_w; \xb)-r(\yb_l; \xb)
+    \big),
+\end{align}
+where $\sigma(x) = e^x / (e^x + 1)$ represents the logistic function. The approach for estimating the reward function within the Bradley-Terry framework is to maximize the log-likelihood $\log \mathbb{P}(\yb_w \succ \yb_l | \xb)$. Assuming accurate estimation of the true reward function $r(\yb; \xb)$, \citet{ChristianoLBMLA17} propose to solve the following problem with policy optimization algorithms in RL such as PPO \citep{PPO}:
+
+% where $\sigma(x) = e^x / (e^x + 1)$ is the logistic function. The reward function associated with the Bradley-Terry model can be estimated by maximizing the log-likelihood $\log \mathbb{P}(\yb \succ \yb' | \xb)$. Suppose the true reward function $r(\yb; \xb)$ is available, \citet{ChristianoLBMLA17} proposed to solve the following optimization problem with policy optimization algorithms in RL such as PPO \citep{PPO}: %\todoq{reference Yue:Done}:
+\begin{align}
+    \max_{\btheta} 
+    \EE_{\xb \sim \cX, \yb \sim \pi_{\btheta}(\cdot|\xb)}
+    [
+    r(\yb; \xb)
+    ]
+    -
+    \beta
+    \mathbb{E}_{\xb \sim \cX}
+    [\mathrm{KL}(\pi_{\btheta}(\cdot|\xb) \| \pi_{\text{ref}}(\cdot|\xb))],
+\end{align}
+where $\cX$ represents the prompt distribution,
+$r(\yb; \xb)$ denotes the reward function learned using the Bradley-Terry model on the preference dataset,
+$\pi_{\text{ref}}$ is the fixed reference model (typically selected to be the one post supervised fine-tuning), and $\beta$ serves as the penalty coefficient of the KL divergence.
+
+\textbf{Directed Preference Optimization (DPO).}
+\citet{DPO} identify that the optimization problem above has a closed-form solution such that for any $\yb$,
+\begin{align*}
+    \pi^*(\yb|\xb)
+    \propto 
+    \pi_{\text{ref}}(\yb|\xb)
+    \exp( r(\yb; \xb) / \beta),
+\end{align*}
+which can be further converted to the DPO loss for any triplet $(\xb, \yb_{w}, \yb_{l})$:
+\begin{equation}
+    \ell_{\text{DPO}}(\xb, \yb_{w}, \yb_{l}; \btheta; \pi_{\text{ref}})
+    = 
+    -\log \sigma \Bigg(
+    \beta \bigg[
+    \log \bigg(\frac{\pi_{\btheta}(\yb_{w}|\xb)}{\pi_{\text{ref}}(\yb_{w}|\xb)}\bigg)
+    -
+    \log \bigg(\frac{\pi_{\btheta}(\yb_{l}|\xb)}{\pi_{\text{ref}}(\yb_{l}|\xb)}\bigg)
+    \bigg]
+    \Bigg).
+    \label{eq:DPO2}
+\end{equation}

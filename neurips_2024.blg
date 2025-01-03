@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: neurips_2024.aux
+The style file: abbrvnat.bst
+Database file #1: neurips_2024.bib
+Warning--empty journal in llama3modelcard
+Warning--empty journal in robbins1951stochastic
+Warning--empty journal in xia2024less
+You've used 48 entries,
+            2773 wiz_defined-function locations,
+            821 strings with 16017 characters,
+and the built_in function-call counts, 34265 in all, are:
+= -- 2515
+> -- 3790
+< -- 9
++ -- 1270
+- -- 1218
+* -- 3278
+:= -- 5659
+add.period$ -- 147
+call.type$ -- 48
+change.case$ -- 550
+chr.to.int$ -- 44
+cite$ -- 99
+duplicate$ -- 1068
+empty$ -- 1749
+format.name$ -- 1270
+if$ -- 6771
+int.to.chr$ -- 5
+int.to.str$ -- 1
+missing$ -- 48
+newline$ -- 249
+num.names$ -- 192
+pop$ -- 1156
+preamble$ -- 1
+purify$ -- 502
+quote$ -- 0
+skip$ -- 1024
+stack$ -- 0
+substring$ -- 209
+swap$ -- 102
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 528
+warning$ -- 3
+while$ -- 152
+width$ -- 0
+write$ -- 605
+(There were 3 warnings)

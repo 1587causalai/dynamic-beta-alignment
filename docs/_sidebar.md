@@ -1,0 +1,10 @@
+* [首页](/)
+  * [项目行动计划](action_plan.md)
+  * [项目备忘录](memo.md)
+* [基准测试指南](baseline.md)
+* [动态β设计](dynamic_beta.md)
+* [实验记录](experiments.md)
+* 附录
+  * [DPO推导](dpo_derivation.md)
+  * [基础知识](preliminaries.md)
+  * [信息融合视角](information_fusion.md)

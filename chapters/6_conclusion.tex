@@ -1,0 +1,10 @@
+\section{Conclusion and Future Work}
+\label{conclusion}
+This paper introduces $\beta$-DPO, a novel framework designed to optimize DPO by dynamically adjusting the $\beta$ parameter in response to the variability in the informativeness of pairwise data. Our approach, which incorporates $\beta$-guided data filtering and batch-level dynamic $\beta$ calibration, has demonstrated significant improvements in DPO's performance across a range of models and datasets. The empirical evaluations indicate that $\beta$-DPO offers an adaptable training paradigm for LLMs with human feedback.
+
+\textbf{Limitations and Future Work.}
+Our work on $\beta$-DPO showcases a promising framework for LLM optimization, albeit with room for advancement. Future endeavors should explore:
+Adaptive $\beta$ in Self-Play: Extending $\beta$-DPO to self-play scenarios \cite{spin,sppo} where negative samples dynamically adapt, necessitating iterative $\beta$ adjustments, to foster the evolution of superior model strategies.
+Enhanced Evaluation Standards: Development of sophisticated metrics and use of advanced evaluators beyond win rates, capitalizing on advancements like GPT-4+, to comprehensively gauge model performance.
+Scalability Investigation: Examining $\beta$-DPO's scalability to ultra-large models surpassing 7B parameters, and its integration into diverse DPO-inspired architectures, is pivotal for practical impact.
+Automated Parameter Tuning: Pursuing automation in parameter tuning, alleviating manual intervention for $\beta$, to streamline the training pipeline and broaden accessibility.
